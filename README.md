@@ -16,8 +16,9 @@ Current notebooks:
 - [`notebooks/01_preprocessing_eda.ipynb`](notebooks/01_preprocessing_eda.ipynb)
 - [`notebooks/02_baseline_modeling.ipynb`](notebooks/02_baseline_modeling.ipynb)
 - [`notebooks/03_lightgbm_tuning.ipynb`](notebooks/03_lightgbm_tuning.ipynb)
+- [`notebooks/04_feature_validation.ipynb`](notebooks/04_feature_validation.ipynb)
 
-The EDA notebook prepares the data, runs exploratory analysis, checks train/test drift, and defines reusable preprocessing helpers. The baseline modeling notebook trains a sequence of models from simple sanity checks to stronger gradient-boosting baselines. The tuning notebook focuses on improving the leading LightGBM model.
+The EDA notebook prepares the data, runs exploratory analysis, checks train/test drift, and defines reusable preprocessing helpers. The baseline modeling notebook trains a sequence of models from simple sanity checks to stronger gradient-boosting baselines. The tuning notebook focuses on improving the leading LightGBM model. The feature validation notebook tests whether engineered feature groups improve performance robustly.
 
 ## 1. Competition Overview
 
@@ -131,13 +132,12 @@ These features are intended for experimentation. The tyre-life ratio features ma
 
 ## 8. Recommended Next Steps
 
-1. Run `03_lightgbm_tuning.ipynb` to tune the current leading model.
-2. Keep XGBoost as a challenger model using the same folds and feature set.
-3. Compare tuned LightGBM against the baseline notebook's best LightGBM score.
-4. Evaluate feature sets with and without engineered tyre-ratio features.
-5. Add error analysis by `Compound`, `Stint`, `RaceProgress`, and `TyreLife` bins.
-6. Inspect calibration before final submission because the target is probability-based.
-7. Optionally test whether the original F1 strategy dataset improves validation performance.
+1. Run `04_feature_validation.ipynb` with `RUN_FAST = True` to smoke-test feature groups.
+2. Re-run `04_feature_validation.ipynb` with `RUN_FAST = False` for final feature-set evidence.
+3. Keep XGBoost as a challenger model using the selected feature set and same folds.
+4. Inspect slice performance by `Compound`, `Stint`, `RaceProgress`, and `TyreLife` bins.
+5. Inspect calibration before final submission because the target is probability-based.
+6. Optionally test whether the original F1 strategy dataset improves validation performance.
 
 ## 9. Repository Structure
 
@@ -148,5 +148,6 @@ These features are intended for experimentation. The tyre-life ratio features ma
 `-- notebooks
     |-- 01_preprocessing_eda.ipynb
     |-- 02_baseline_modeling.ipynb
-    `-- 03_lightgbm_tuning.ipynb
+    |-- 03_lightgbm_tuning.ipynb
+    `-- 04_feature_validation.ipynb
 ```
