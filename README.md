@@ -18,8 +18,10 @@ Current notebooks:
 - [`notebooks/03_lightgbm_tuning.ipynb`](notebooks/03_lightgbm_tuning.ipynb)
 - [`notebooks/04_feature_validation.ipynb`](notebooks/04_feature_validation.ipynb)
 - [`notebooks/05_lgbm_xgb_ensemble.ipynb`](notebooks/05_lgbm_xgb_ensemble.ipynb)
+- [`notebooks/06_cnn_baseline.ipynb`](notebooks/06_cnn_baseline.ipynb)
+- [`notebooks/07_circuit_maps_eda.ipynb`](notebooks/07_circuit_maps_eda.ipynb)
 
-The EDA notebook prepares the data, runs exploratory analysis, checks train/test drift, and defines reusable preprocessing helpers. The baseline modeling notebook trains a sequence of models from simple sanity checks to stronger gradient-boosting baselines. The tuning notebook focuses on improving the leading LightGBM model. The feature validation notebook tests whether engineered feature groups improve performance robustly. The ensemble notebook tests whether averaging tuned LightGBM and XGBoost probabilities improves validation.
+The EDA notebook prepares the data, runs exploratory analysis, checks train/test drift, and defines reusable preprocessing helpers. The baseline modeling notebook trains a sequence of models from simple sanity checks to stronger gradient-boosting baselines. The tuning notebook focuses on improving the leading LightGBM model. The feature validation notebook tests whether engineered feature groups improve performance robustly. The ensemble notebook tests whether averaging tuned LightGBM and XGBoost probabilities improves validation. The CNN notebook adds a neural-network challenger, and the circuit-map notebook adds optional FastF1 visual context.
 
 ## 1. Competition Overview
 
@@ -136,9 +138,11 @@ These features are intended for experimentation. The tyre-life ratio features ma
 1. Run `04_feature_validation.ipynb` with `RUN_FAST = True` to smoke-test feature groups.
 2. Re-run `04_feature_validation.ipynb` with `RUN_FAST = False` for final feature-set evidence.
 3. Run `05_lgbm_xgb_ensemble.ipynb` with the selected feature set to test averaged probabilities.
-4. Inspect slice performance by `Compound`, `Stint`, `RaceProgress`, and `TyreLife` bins.
-5. Inspect calibration before final submission because the target is probability-based.
-6. Optionally test whether the original F1 strategy dataset improves validation performance.
+4. Run `06_cnn_baseline.ipynb` as a neural-network challenger baseline.
+5. Use `07_circuit_maps_eda.ipynb` for race-level strategy context and optional circuit maps.
+6. Inspect slice performance by `Compound`, `Stint`, `RaceProgress`, and `TyreLife` bins.
+7. Inspect calibration before final submission because the target is probability-based.
+8. Optionally test whether the original F1 strategy dataset improves validation performance.
 
 ## 9. Repository Structure
 
@@ -151,5 +155,7 @@ These features are intended for experimentation. The tyre-life ratio features ma
     |-- 02_baseline_modeling.ipynb
     |-- 03_lightgbm_tuning.ipynb
     |-- 04_feature_validation.ipynb
-    `-- 05_lgbm_xgb_ensemble.ipynb
+    |-- 05_lgbm_xgb_ensemble.ipynb
+    |-- 06_cnn_baseline.ipynb
+    `-- 07_circuit_maps_eda.ipynb
 ```
