@@ -1,0 +1,12 @@
+# Local data and generated outputs
+data/
+outputs/
+*.parquet
+*.csv
+
+# Notebook/runtime noise
+.ipynb_checkpoints/
+__pycache__/
+
+# Local export packages
+dist/
