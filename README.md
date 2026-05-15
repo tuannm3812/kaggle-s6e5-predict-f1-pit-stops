@@ -11,20 +11,15 @@ This repository contains an exploratory workflow for the Kaggle competition **Pr
 
 **Repository description:** Exploratory data analysis and preprocessing workflow for Kaggle Playground Series S6E5, predicting next-lap Formula 1 pit stops from race, tyre, lap-time, and position features.
 
-The current focus is the first notebook:
+Current notebooks:
 
 - [`notebooks/01_preprocessing_eda.ipynb`](notebooks/01_preprocessing_eda.ipynb)
 - [`notebooks/02_baseline_modeling.ipynb`](notebooks/02_baseline_modeling.ipynb)
+- [`notebooks/03_lightgbm_tuning.ipynb`](notebooks/03_lightgbm_tuning.ipynb)
 
-The EDA notebook prepares the data, runs initial exploratory data analysis, checks train/test drift, and defines reusable preprocessing helpers. The baseline modeling notebook then trains a sequence of models from simple sanity checks to stronger gradient-boosting baselines.
+The EDA notebook prepares the data, runs exploratory analysis, checks train/test drift, and defines reusable preprocessing helpers. The baseline modeling notebook trains a sequence of models from simple sanity checks to stronger gradient-boosting baselines. The tuning notebook focuses on improving the leading LightGBM model.
 
-Kaggle EDA notebook:
-
-```text
-https://www.kaggle.com/code/tuannm3812/kaggle-predict-f1-pit-stops-preprocessing-and-eda
-```
-
-## Competition Overview
+## 1. Competition Overview
 
 The dataset is inspired by Formula 1 race strategy data. Each row represents race-lap context for a driver, with the binary target:
 
@@ -45,7 +40,7 @@ Files:
 - `test.csv`: test data requiring probability predictions
 - `sample_submission.csv`: required submission format
 
-## Dataset Snapshot
+## 2. Dataset Snapshot
 
 The training data has roughly 439k rows and 16 columns. Key feature groups include:
 
@@ -57,7 +52,7 @@ The training data has roughly 439k rows and 16 columns. Key feature groups inclu
 
 The target is imbalanced. From the dataset profile, about 20% of rows have `PitNextLap = 1`, so validation should preserve class balance with stratified splits.
 
-## Notebook Summary
+## 3. Notebook Workflow
 
 The preprocessing and EDA notebook covers:
 
@@ -73,7 +68,7 @@ The preprocessing and EDA notebook covers:
 10. A reusable scikit-learn preprocessing pipeline
 11. Prepared train/test feature exports for Kaggle working sessions
 
-## Initial EDA Insights
+## 4. Initial EDA Insights
 
 These are the main findings from the current notebook run and dataset profile:
 
@@ -87,7 +82,7 @@ These are the main findings from the current notebook run and dataset profile:
 - **Numeric train/test drift appears very low.** The largest PSI values in the current run are tiny, led by `TyreLife`, `RaceProgress`, and `LapNumber`. Broad distribution shift does not look like the first-order risk.
 - **Sequential `id` should usually be excluded.** The notebook keeps `id` out of the modeling preprocessor because it is unlikely to represent causal race information.
 
-## Deep-Dive Analysis Added
+## 5. Deep-Dive Analysis
 
 The notebook now includes additional checks for:
 
@@ -98,7 +93,7 @@ The notebook now includes additional checks for:
 
 These analyses are intended to answer whether the strongest raw signals still matter after accounting for race phase and stint context.
 
-## Baseline Modeling Insights
+## 6. Baseline Modeling Insights
 
 The baseline modeling notebook was run in `RUN_FAST = True` mode on a stratified 180k-row sample. The current model ranking is:
 
@@ -120,7 +115,7 @@ Key takeaways:
 
 The next modeling step should be LightGBM-focused tuning on full data, with XGBoost kept as a benchmark.
 
-## Starter Feature Engineering
+## 7. Starter Feature Engineering
 
 The notebook creates a conservative row-level feature set available in both train and test:
 
@@ -134,17 +129,17 @@ The notebook creates a conservative row-level feature set available in both trai
 
 These features are intended for experimentation. The tyre-life ratio features may be powerful, but they should be tested with robust cross-validation to avoid overfitting the synthetic data generation process.
 
-## Recommended Next Steps
+## 8. Recommended Next Steps
 
-1. Set `RUN_FAST = False` and rerun the baseline notebook on the full training data.
-2. Tune LightGBM with a compact search over `num_leaves`, `min_child_samples`, `learning_rate`, `n_estimators`, `subsample`, `colsample_bytree`, and regularization.
-3. Keep XGBoost as a challenger model using the same folds and feature set.
+1. Run `03_lightgbm_tuning.ipynb` to tune the current leading model.
+2. Keep XGBoost as a challenger model using the same folds and feature set.
+3. Compare tuned LightGBM against the baseline notebook's best LightGBM score.
 4. Evaluate feature sets with and without engineered tyre-ratio features.
 5. Add error analysis by `Compound`, `Stint`, `RaceProgress`, and `TyreLife` bins.
 6. Inspect calibration before final submission because the target is probability-based.
 7. Optionally test whether the original F1 strategy dataset improves validation performance.
 
-## Repository Structure
+## 9. Repository Structure
 
 ```text
 .
@@ -152,23 +147,6 @@ These features are intended for experimentation. The tyre-life ratio features ma
 |-- .gitignore
 `-- notebooks
     |-- 01_preprocessing_eda.ipynb
-    `-- 02_baseline_modeling.ipynb
+    |-- 02_baseline_modeling.ipynb
+    `-- 03_lightgbm_tuning.ipynb
 ```
-
-## Usage
-
-On Kaggle, attach the competition dataset and run:
-
-```text
-notebooks/01_preprocessing_eda.ipynb
-```
-
-Locally, place the competition files in one of the supported locations:
-
-```text
-data/train.csv
-data/test.csv
-data/sample_submission.csv
-```
-
-The notebook will automatically detect the available path.
