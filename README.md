@@ -13,16 +13,12 @@ This repository contains an exploratory workflow for the Kaggle competition **Pr
 
 Current notebooks:
 
-- [`notebooks/01_preprocessing_eda.ipynb`](notebooks/01_preprocessing_eda.ipynb)
+- [`notebooks/01_eda_and_circuit_context.ipynb`](notebooks/01_eda_and_circuit_context.ipynb)
 - [`notebooks/02_baseline_modeling.ipynb`](notebooks/02_baseline_modeling.ipynb)
-- [`notebooks/03_lightgbm_tuning.ipynb`](notebooks/03_lightgbm_tuning.ipynb)
-- [`notebooks/04_feature_validation.ipynb`](notebooks/04_feature_validation.ipynb)
-- [`notebooks/05_lgbm_xgb_ensemble.ipynb`](notebooks/05_lgbm_xgb_ensemble.ipynb)
-- [`notebooks/06_cnn_baseline.ipynb`](notebooks/06_cnn_baseline.ipynb)
-- [`notebooks/07_circuit_maps_eda.ipynb`](notebooks/07_circuit_maps_eda.ipynb)
-- [`notebooks/08_catboost_realmlp_feature_importance.ipynb`](notebooks/08_catboost_realmlp_feature_importance.ipynb)
+- [`notebooks/03_model_optimization_and_ensemble.ipynb`](notebooks/03_model_optimization_and_ensemble.ipynb)
+- [`notebooks/04_challenger_models_and_feature_importance.ipynb`](notebooks/04_challenger_models_and_feature_importance.ipynb)
 
-The EDA notebook prepares the data, runs exploratory analysis, checks train/test drift, and defines reusable preprocessing helpers. The baseline modeling notebook trains a sequence of models from simple sanity checks to stronger gradient-boosting baselines. The tuning notebook focuses on improving the leading LightGBM model. The feature validation notebook tests whether engineered feature groups improve performance robustly. The ensemble notebook tests whether averaging tuned LightGBM and XGBoost probabilities improves validation. The CNN notebook adds a neural-network challenger, the circuit-map notebook adds optional FastF1 visual context, and the CatBoost/RealMLP notebook tests additional tabular challengers with feature importance.
+The workflow is grouped into four notebooks: EDA and circuit context, baseline modeling, model optimization with feature validation and ensembling, and challenger models with feature importance.
 
 ## 1. Competition Overview
 
@@ -59,7 +55,7 @@ The target is imbalanced. From the dataset profile, about 20% of rows have `PitN
 
 ## 3. Notebook Workflow
 
-The preprocessing and EDA notebook covers:
+The EDA and circuit-context notebook covers:
 
 1. Environment setup and Kaggle/local data path detection
 2. Data loading with memory downcasting
@@ -72,6 +68,9 @@ The preprocessing and EDA notebook covers:
 9. Starter feature engineering
 10. A reusable scikit-learn preprocessing pipeline
 11. Prepared train/test feature exports for Kaggle working sessions
+12. Race-level pit-window context and optional FastF1 circuit maps
+
+The baseline notebook compares sanity, linear, sklearn tree, LightGBM, and XGBoost models. The optimization notebook tunes LightGBM, validates feature groups, and tests a LightGBM/XGBoost blend. The challenger notebook contains the CNN baseline, CatBoost, optional RealMLP, and feature-importance analysis.
 
 ## 4. Initial EDA Insights
 
@@ -152,13 +151,12 @@ These features are intended for experimentation. The tyre-life ratio features ma
 
 ## 9. Recommended Next Steps
 
-1. Run `08_catboost_realmlp_feature_importance.ipynb` to test CatBoost and optional RealMLP.
+1. Use `03_model_optimization_and_ensemble.ipynb` with the selected `safe_plus_ratios_no_driver` feature set.
 2. Review LightGBM/CatBoost feature importance agreement.
-3. Re-run feature validation and ensemble notebooks with `safe_plus_ratios_no_driver`.
-4. Use CatBoost in an ensemble only if its OOF score or prediction diversity justifies it.
-5. Inspect slice performance by `Compound`, `Stint`, `RaceProgress`, and `TyreLife` bins.
-6. Inspect calibration before final submission because the target is probability-based.
-7. Optionally test whether the original F1 strategy dataset improves validation performance.
+3. Add CatBoost to the ensemble only if its OOF score or prediction diversity justifies it.
+4. Inspect slice performance by `Compound`, `Stint`, `RaceProgress`, and `TyreLife` bins.
+5. Inspect calibration before final submission because the target is probability-based.
+6. Optionally test whether the original F1 strategy dataset improves validation performance.
 
 ## 10. Repository Structure
 
@@ -167,12 +165,8 @@ These features are intended for experimentation. The tyre-life ratio features ma
 |-- README.md
 |-- .gitignore
 `-- notebooks
-    |-- 01_preprocessing_eda.ipynb
+    |-- 01_eda_and_circuit_context.ipynb
     |-- 02_baseline_modeling.ipynb
-    |-- 03_lightgbm_tuning.ipynb
-    |-- 04_feature_validation.ipynb
-    |-- 05_lgbm_xgb_ensemble.ipynb
-    |-- 06_cnn_baseline.ipynb
-    |-- 07_circuit_maps_eda.ipynb
-    `-- 08_catboost_realmlp_feature_importance.ipynb
+    |-- 03_model_optimization_and_ensemble.ipynb
+    `-- 04_challenger_models_and_feature_importance.ipynb
 ```
