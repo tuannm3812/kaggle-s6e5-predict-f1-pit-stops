@@ -18,7 +18,7 @@ Current notebooks:
 - [`notebooks/03_model_optimization_and_ensemble.ipynb`](notebooks/03_model_optimization_and_ensemble.ipynb)
 - [`notebooks/04_challenger_models_and_feature_importance.ipynb`](notebooks/04_challenger_models_and_feature_importance.ipynb)
 
-The workflow is grouped into four notebooks: EDA and circuit context, baseline modeling, model optimization with feature validation and ensembling, and challenger models with feature importance.
+The workflow is grouped into four notebooks: EDA, baseline modeling, model optimization with feature validation and ensembling, and challenger models with feature importance.
 
 ## 1. Competition Overview
 
@@ -68,7 +68,7 @@ The EDA and circuit-context notebook covers:
 9. Starter feature engineering
 10. A reusable scikit-learn preprocessing pipeline
 11. Prepared train/test feature exports for Kaggle working sessions
-12. Race-level pit-window context and optional FastF1 circuit maps
+12. Race-level pit-window context
 
 The baseline notebook compares sanity, linear, sklearn tree, LightGBM, and XGBoost models. The optimization notebook tunes LightGBM, validates feature groups, and tests a LightGBM/XGBoost blend. The challenger notebook contains the CNN baseline, CatBoost, optional RealMLP, and feature-importance analysis.
 
