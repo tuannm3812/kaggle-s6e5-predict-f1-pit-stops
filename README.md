@@ -20,8 +20,9 @@ Current notebooks:
 - [`notebooks/05_lgbm_xgb_ensemble.ipynb`](notebooks/05_lgbm_xgb_ensemble.ipynb)
 - [`notebooks/06_cnn_baseline.ipynb`](notebooks/06_cnn_baseline.ipynb)
 - [`notebooks/07_circuit_maps_eda.ipynb`](notebooks/07_circuit_maps_eda.ipynb)
+- [`notebooks/08_catboost_realmlp_feature_importance.ipynb`](notebooks/08_catboost_realmlp_feature_importance.ipynb)
 
-The EDA notebook prepares the data, runs exploratory analysis, checks train/test drift, and defines reusable preprocessing helpers. The baseline modeling notebook trains a sequence of models from simple sanity checks to stronger gradient-boosting baselines. The tuning notebook focuses on improving the leading LightGBM model. The feature validation notebook tests whether engineered feature groups improve performance robustly. The ensemble notebook tests whether averaging tuned LightGBM and XGBoost probabilities improves validation. The CNN notebook adds a neural-network challenger, and the circuit-map notebook adds optional FastF1 visual context.
+The EDA notebook prepares the data, runs exploratory analysis, checks train/test drift, and defines reusable preprocessing helpers. The baseline modeling notebook trains a sequence of models from simple sanity checks to stronger gradient-boosting baselines. The tuning notebook focuses on improving the leading LightGBM model. The feature validation notebook tests whether engineered feature groups improve performance robustly. The ensemble notebook tests whether averaging tuned LightGBM and XGBoost probabilities improves validation. The CNN notebook adds a neural-network challenger, the circuit-map notebook adds optional FastF1 visual context, and the CatBoost/RealMLP notebook tests additional tabular challengers with feature importance.
 
 ## 1. Competition Overview
 
@@ -119,7 +120,23 @@ Key takeaways:
 
 The next modeling step should be LightGBM-focused tuning on full data, with XGBoost kept as a benchmark.
 
-## 7. Starter Feature Engineering
+## 7. Feature Validation and Challenger Insights
+
+Feature validation on a 180k-row stratified sample showed:
+
+| Feature Set | OOF ROC AUC | OOF Average Precision | OOF Log Loss |
+| --- | ---: | ---: | ---: |
+| Safe + ratios, no Driver | 0.9473 | 0.8050 | 0.2293 |
+| Safe + ratios | 0.9473 | 0.8048 | 0.2293 |
+| Safe + ratios, no PitStop | 0.9466 | 0.8028 | 0.2307 |
+| Safe engineered | 0.9462 | 0.8026 | 0.2316 |
+| Raw | 0.9453 | 0.7994 | 0.2334 |
+
+The engineered ratio features help. Dropping `Driver` very slightly improves validation, which suggests driver identity is not essential and may add mild noise. Dropping `PitStop` hurts, so it should be kept if it is valid test-time information.
+
+The CNN baseline is not competitive yet. Its OOF ROC AUC is about `0.799`, with much worse log loss than the tree models. For now, neural models should be treated as experimental challengers rather than submission candidates.
+
+## 8. Starter Feature Engineering
 
 The notebook creates a conservative row-level feature set available in both train and test:
 
@@ -133,18 +150,17 @@ The notebook creates a conservative row-level feature set available in both trai
 
 These features are intended for experimentation. The tyre-life ratio features may be powerful, but they should be tested with robust cross-validation to avoid overfitting the synthetic data generation process.
 
-## 8. Recommended Next Steps
+## 9. Recommended Next Steps
 
-1. Run `04_feature_validation.ipynb` with `RUN_FAST = True` to smoke-test feature groups.
-2. Re-run `04_feature_validation.ipynb` with `RUN_FAST = False` for final feature-set evidence.
-3. Run `05_lgbm_xgb_ensemble.ipynb` with the selected feature set to test averaged probabilities.
-4. Run `06_cnn_baseline.ipynb` as a neural-network challenger baseline.
-5. Use `07_circuit_maps_eda.ipynb` for race-level strategy context and optional circuit maps.
-6. Inspect slice performance by `Compound`, `Stint`, `RaceProgress`, and `TyreLife` bins.
-7. Inspect calibration before final submission because the target is probability-based.
-8. Optionally test whether the original F1 strategy dataset improves validation performance.
+1. Run `08_catboost_realmlp_feature_importance.ipynb` to test CatBoost and optional RealMLP.
+2. Review LightGBM/CatBoost feature importance agreement.
+3. Re-run feature validation and ensemble notebooks with `safe_plus_ratios_no_driver`.
+4. Use CatBoost in an ensemble only if its OOF score or prediction diversity justifies it.
+5. Inspect slice performance by `Compound`, `Stint`, `RaceProgress`, and `TyreLife` bins.
+6. Inspect calibration before final submission because the target is probability-based.
+7. Optionally test whether the original F1 strategy dataset improves validation performance.
 
-## 9. Repository Structure
+## 10. Repository Structure
 
 ```text
 .
@@ -157,5 +173,6 @@ These features are intended for experimentation. The tyre-life ratio features ma
     |-- 04_feature_validation.ipynb
     |-- 05_lgbm_xgb_ensemble.ipynb
     |-- 06_cnn_baseline.ipynb
-    `-- 07_circuit_maps_eda.ipynb
+    |-- 07_circuit_maps_eda.ipynb
+    `-- 08_catboost_realmlp_feature_importance.ipynb
 ```
