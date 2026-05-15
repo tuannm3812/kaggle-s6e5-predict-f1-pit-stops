@@ -1,5 +1,12 @@
 # Kaggle Predict F1 Pit Stops
 
+![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python&logoColor=white)
+![Kaggle](https://img.shields.io/badge/Kaggle-Playground%20S6E5-20BEFF?style=flat-square&logo=kaggle&logoColor=white)
+![Notebook](https://img.shields.io/badge/Notebook-EDA%20%2B%20Modeling-F37626?style=flat-square&logo=jupyter&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Baseline%20Ready-2E7D32?style=flat-square)
+
+![Formula 1 pit stop](https://media.formula1.com/image/upload/t_16by9Centre/c_lfill,w_3392/q_auto/v1740000001/fom-website/2025/Miscellaneous/GettyImages-666401980.webp)
+
 This repository contains an exploratory workflow for the Kaggle competition **Predict F1 Pit Stops**, where the goal is to predict whether a Formula 1 car will pit on the next lap.
 
 **Repository description:** Exploratory data analysis and preprocessing workflow for Kaggle Playground Series S6E5, predicting next-lap Formula 1 pit stops from race, tyre, lap-time, and position features.
@@ -64,7 +71,7 @@ The preprocessing and EDA notebook covers:
 8. Train/test distribution drift checks, including PSI
 9. Starter feature engineering
 10. A reusable scikit-learn preprocessing pipeline
-11. Optional export of prepared artifacts to parquet or CSV
+11. Prepared train/test feature exports for Kaggle working sessions
 
 ## Initial EDA Insights
 
@@ -91,6 +98,28 @@ The notebook now includes additional checks for:
 
 These analyses are intended to answer whether the strongest raw signals still matter after accounting for race phase and stint context.
 
+## Baseline Modeling Insights
+
+The baseline modeling notebook was run in `RUN_FAST = True` mode on a stratified 180k-row sample. The current model ranking is:
+
+| Model | OOF ROC AUC | OOF Average Precision | OOF Log Loss | Fit Time |
+| --- | ---: | ---: | ---: | ---: |
+| LightGBM | 0.9457 | 0.7993 | 0.2328 | 33.4s |
+| XGBoost | 0.9450 | 0.7980 | 0.2341 | 24.4s |
+| HistGradientBoosting | 0.9436 | 0.7921 | 0.2371 | 32.9s |
+| Logistic Regression | 0.8653 | 0.5958 | 0.4661 | 492.4s |
+| Dummy Prior | 0.5000 | 0.1990 | 0.4990 | 5.5s |
+
+Key takeaways:
+
+- Gradient boosting is clearly the right model family for the next phase.
+- LightGBM is the current leader across AUC, average precision, and log loss.
+- XGBoost is very close and faster in this sampled run, so it remains a good challenger.
+- Logistic regression is much weaker and unexpectedly slow with one-hot high-cardinality features.
+- The gap between HistGradientBoosting and LightGBM is small enough that feature engineering may matter as much as model choice.
+
+The next modeling step should be LightGBM-focused tuning on full data, with XGBoost kept as a benchmark.
+
 ## Starter Feature Engineering
 
 The notebook creates a conservative row-level feature set available in both train and test:
@@ -107,24 +136,23 @@ These features are intended for experimentation. The tyre-life ratio features ma
 
 ## Recommended Next Steps
 
-1. Re-run `01_preprocessing_eda.ipynb` on Kaggle after the latest notebook refinements.
-2. Review the compound/stint and tyre-life/race-progress heatmaps for nonlinear strategy windows.
-3. Run `02_baseline_modeling.ipynb` with `RUN_FAST = True` for a quick smoke test.
-4. Set `RUN_FAST = False` for full-data cross-validation.
-5. Compare Logistic Regression, HistGradientBoosting, LightGBM/XGBoost, and other available baselines.
-6. Evaluate feature sets with and without engineered tyre-ratio features.
-7. Inspect calibration and choose a submission threshold only if the metric requires labels rather than probabilities.
-8. Optionally test whether the original F1 strategy dataset improves validation performance.
+1. Set `RUN_FAST = False` and rerun the baseline notebook on the full training data.
+2. Tune LightGBM with a compact search over `num_leaves`, `min_child_samples`, `learning_rate`, `n_estimators`, `subsample`, `colsample_bytree`, and regularization.
+3. Keep XGBoost as a challenger model using the same folds and feature set.
+4. Evaluate feature sets with and without engineered tyre-ratio features.
+5. Add error analysis by `Compound`, `Stint`, `RaceProgress`, and `TyreLife` bins.
+6. Inspect calibration before final submission because the target is probability-based.
+7. Optionally test whether the original F1 strategy dataset improves validation performance.
 
 ## Repository Structure
 
 ```text
 .
-├── README.md
-├── .gitignore
-└── notebooks
-    ├── 01_preprocessing_eda.ipynb
-    └── 02_baseline_modeling.ipynb
+|-- README.md
+|-- .gitignore
+`-- notebooks
+    |-- 01_preprocessing_eda.ipynb
+    `-- 02_baseline_modeling.ipynb
 ```
 
 ## Usage
@@ -144,9 +172,3 @@ data/sample_submission.csv
 ```
 
 The notebook will automatically detect the available path.
-
-## Artifact Policy
-
-Generated preprocessing files such as parquet or CSV outputs should generally not be committed to this repository. They are derived artifacts and can be regenerated from the notebook. Keep the repo focused on source notebooks, code, and documentation.
-
-For sharing a portable snapshot, create a zip of the source files instead of committing generated data outputs.
