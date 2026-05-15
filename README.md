@@ -7,8 +7,15 @@ This repository contains an exploratory workflow for the Kaggle competition **Pr
 The current focus is the first notebook:
 
 - [`notebooks/01_preprocessing_eda.ipynb`](notebooks/01_preprocessing_eda.ipynb)
+- [`notebooks/02_baseline_modeling.ipynb`](notebooks/02_baseline_modeling.ipynb)
 
-It prepares the data, runs initial exploratory data analysis, checks train/test drift, and defines reusable preprocessing helpers for later modeling.
+The EDA notebook prepares the data, runs initial exploratory data analysis, checks train/test drift, and defines reusable preprocessing helpers. The baseline modeling notebook then trains a sequence of models from simple sanity checks to stronger gradient-boosting baselines.
+
+Kaggle EDA notebook:
+
+```text
+https://www.kaggle.com/code/tuannm3812/kaggle-predict-f1-pit-stops-preprocessing-and-eda
+```
 
 ## Competition Overview
 
@@ -102,11 +109,12 @@ These features are intended for experimentation. The tyre-life ratio features ma
 
 1. Re-run `01_preprocessing_eda.ipynb` on Kaggle after the latest notebook refinements.
 2. Review the compound/stint and tyre-life/race-progress heatmaps for nonlinear strategy windows.
-3. Create a baseline modeling notebook with stratified cross-validation.
-4. Compare Logistic Regression, LightGBM/XGBoost, and CatBoost baselines.
-5. Evaluate feature sets with and without engineered tyre-ratio features.
-6. Inspect calibration and choose a submission threshold only if the metric requires labels rather than probabilities.
-7. Optionally test whether the original F1 strategy dataset improves validation performance.
+3. Run `02_baseline_modeling.ipynb` with `RUN_FAST = True` for a quick smoke test.
+4. Set `RUN_FAST = False` for full-data cross-validation.
+5. Compare Logistic Regression, HistGradientBoosting, LightGBM/XGBoost, and other available baselines.
+6. Evaluate feature sets with and without engineered tyre-ratio features.
+7. Inspect calibration and choose a submission threshold only if the metric requires labels rather than probabilities.
+8. Optionally test whether the original F1 strategy dataset improves validation performance.
 
 ## Repository Structure
 
@@ -115,7 +123,8 @@ These features are intended for experimentation. The tyre-life ratio features ma
 ├── README.md
 ├── .gitignore
 └── notebooks
-    └── 01_preprocessing_eda.ipynb
+    ├── 01_preprocessing_eda.ipynb
+    └── 02_baseline_modeling.ipynb
 ```
 
 ## Usage
