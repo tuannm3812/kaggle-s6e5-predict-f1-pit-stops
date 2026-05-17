@@ -9,8 +9,6 @@
 
 This repository contains an end-to-end notebook workflow for Kaggle Playground Series S6E5, **Predict F1 Pit Stops**. The task is to predict the probability that a Formula 1 driver will pit on the next lap from race, stint, tyre, lap-time, and position context.
 
-**Repository description:** EDA, feature validation, model tuning, calibration diagnostics, and submission workflow for next-lap Formula 1 pit-stop prediction.
-
 ## 1. Project Overview
 
 The competition dataset is inspired by Formula 1 strategy data. Each row describes one driver-lap state, and the target is binary:
