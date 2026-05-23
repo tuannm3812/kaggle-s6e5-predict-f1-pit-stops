@@ -21,7 +21,7 @@ establishes the data profile and modeling hypotheses for predicting
 | Numerical Signal and Outliers | Inspect numeric distributions and relationship with the target. | Numeric summary and outlier context. |
 | Strategy Interactions | Study compound, stint, tyre-life, and race-progress interactions. | Heatmaps that motivate engineered features. |
 | Train/Test Drift | Compare train and test distributions. | PSI and category coverage diagnostics. |
-| Circuit Context | Summarize race-level pit behavior. | Race slices for later calibration checks. |
+| Circuit Context and Strategy Maps | Summarize race-level pit behavior and visualize race-progress pit windows. | Race slices and stylized circuit dashboards. |
 | EDA Summary | Convert findings into modeling directions. | Feature and validation recommendations. |
 
 ## 3. Key Findings
@@ -36,6 +36,11 @@ supports tree-based models as the primary family.
 
 Train/test numeric drift is low. The largest remaining modeling risk is
 race-specific calibration rather than broad distribution shift.
+
+The circuit-style maps add a race-progress deep dive. They use deterministic
+stylized circuit avatars rather than real track geometry, then color each path
+by pit-risk or median tyre-life windows. This makes it easier to spot races
+where pit timing is concentrated in specific portions of race progress.
 
 ## 4. Downstream Decisions
 

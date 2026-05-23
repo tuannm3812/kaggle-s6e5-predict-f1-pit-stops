@@ -104,3 +104,21 @@ Top-ranked predictions are strong:
 
 The largest remaining gaps are race-specific, including Chinese, Belgian,
 Japanese, Hungarian, Monaco, Saudi Arabian, and Las Vegas Grand Prix slices.
+
+## 8. Circuit-Style Deep Dive
+
+The EDA notebook now includes stylized circuit avatars for race-progress
+analysis. These are deterministic visual maps generated from race names, not
+real circuit geometry. They are still useful because the competition data
+contains `RaceProgress` but does not contain GPS track coordinates.
+
+The circuit maps support three diagnostics:
+
+- pit-risk windows by race, using empirical `PitNextLap` rate across
+  race-progress bins;
+- median tyre life around the selected race-progress path;
+- compound-specific pit-rate curves for a selected race.
+
+Implication: the model should not only learn global tyre-life behavior. It
+should also be checked for race-specific timing windows, especially when
+calibration gaps appear in race slices.
