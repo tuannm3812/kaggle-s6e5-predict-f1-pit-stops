@@ -33,6 +33,16 @@ cross-validation and makes average precision a useful secondary metric.
 records that `HARD` has a much higher pit-next-lap rate than `MEDIUM`, while
 `WET` is rare and low-rate.
 
+The rendered EDA output gives the useful scale:
+
+| Compound | Rows | PitNextLap Rate | Difference vs Global |
+| --- | ---: | ---: | ---: |
+| `HARD` | 170,518 | 0.32754 | +0.12856 |
+| `SOFT` | 38,744 | 0.19348 | -0.00551 |
+| `INTERMEDIATE` | 17,382 | 0.15228 | -0.04670 |
+| `MEDIUM` | 211,141 | 0.10113 | -0.09785 |
+| `WET` | 1,355 | 0.02509 | -0.17389 |
+
 Implication: categorical handling must preserve compound identity. Tree models
 with ordinal-encoded categoricals work well here because the strongest
 interactions are nonlinear and strategy-dependent.
@@ -52,10 +62,34 @@ Lap-time features contain extreme values, especially `LapTime_Delta`,
 `LapTime (s)`, and `Cumulative_Degradation`. This favors tree-based models over
 purely linear methods.
 
+Important rendered-output ranges:
+
+| Feature | Median | Minimum | Maximum |
+| --- | ---: | ---: | ---: |
+| `LapTime_Delta` | -0.295 | -2403.895 | 2423.932 |
+| `LapTime (s)` | 90.521 | 67.694 | 2507.607 |
+| `Cumulative_Degradation` | -20.994 | -274.564 | 2412.026 |
+| `TyreLife` | 12.000 | 1.000 | 77.000 |
+| `RaceProgress` | 0.269 | 0.013 | 1.000 |
+
+Implication: do not clip or transform these fields casually. Validate any
+outlier treatment against tree-model OOF metrics because extreme timing values
+may encode meaningful race-state events.
+
 ## 5. Train/Test Drift
 
 Numeric train/test drift is very low. The largest PSI values are still tiny,
 led by `TyreLife`, `RaceProgress`, and `LapNumber`.
+
+Top PSI values from the rendered EDA output:
+
+| Feature | Train Mean | Test Mean | PSI |
+| --- | ---: | ---: | ---: |
+| `TyreLife` | 14.15823 | 14.16063 | 0.000186 |
+| `RaceProgress` | 0.33766 | 0.33670 | 0.000177 |
+| `LapNumber` | 23.10591 | 23.05019 | 0.000164 |
+| `LapTime (s)` | 90.94875 | 90.98687 | 0.000105 |
+| `Cumulative_Degradation` | -25.72176 | -25.84949 | 0.000096 |
 
 Implication: the public test distribution appears close enough to train that
 standard stratified CV is a useful first validation strategy. The remaining risk
@@ -105,6 +139,12 @@ Top-ranked predictions are strong:
 The largest remaining gaps are race-specific, including Chinese, Belgian,
 Japanese, Hungarian, Monaco, Saudi Arabian, and Las Vegas Grand Prix slices.
 
+Notebook 3 confirms that model-family switching is not the main remaining
+issue. XGBoost does not improve the tuned LightGBM blend, and notebook 4 shows
+that CatBoost is highly correlated with LightGBM (`0.98112`). This points the
+next iteration toward race-specific calibration and interaction features rather
+than adding more generic model families.
+
 ## 8. Circuit-Style Deep Dive
 
 The EDA notebook now includes stylized circuit avatars for race-progress
@@ -122,3 +162,17 @@ The circuit maps support three diagnostics:
 Implication: the model should not only learn global tyre-life behavior. It
 should also be checked for race-specific timing windows, especially when
 calibration gaps appear in race slices.
+
+Rendered race-level output shows why this matters:
+
+| Year | Race | Rows | PitNextLap Rate | Median TyreLife |
+| ---: | --- | ---: | ---: | ---: |
+| 2024 | Monaco Grand Prix | 6,002 | 0.76025 | 25.0 |
+| 2025 | Belgian Grand Prix | 1,552 | 0.55348 | 11.0 |
+| 2022 | British Grand Prix | 2,532 | 0.50158 | 11.0 |
+| 2024 | Spanish Grand Prix | 6,040 | 0.50116 | 12.0 |
+| 2024 | Japanese Grand Prix | 2,800 | 0.49286 | 12.0 |
+
+These rates are far above the global `19.90%` target rate. They should be used
+as diagnostic slices for calibration, not as a reason to add target-derived
+race encodings without fold-safe validation.

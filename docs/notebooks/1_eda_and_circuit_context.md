@@ -34,6 +34,15 @@ Compound, tyre age, stint, race progress, and race identity carry the core
 strategy signal. Lap-time and degradation fields include extreme values, which
 supports tree-based models as the primary family.
 
+Rendered-output highlights:
+
+| Area | Evidence | Modeling Implication |
+| --- | --- | --- |
+| Compound | `HARD` rate `0.3275`, `MEDIUM` rate `0.1011`, `WET` rate `0.0251` | Preserve compound identity and interactions. |
+| Outliers | `LapTime_Delta` spans about `-2403.9` to `2423.9` | Prefer tree models and validate any clipping. |
+| Drift | Largest PSI is about `0.000186` | Standard stratified CV is reasonable. |
+| Race slices | `2024 Monaco Grand Prix` rate `0.7602` | Inspect race-level calibration gaps. |
+
 Train/test numeric drift is low. The largest remaining modeling risk is
 race-specific calibration rather than broad distribution shift.
 

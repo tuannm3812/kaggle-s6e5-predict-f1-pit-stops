@@ -30,6 +30,22 @@ calibration, and writes the final submission candidate.
 The blend selected `LightGBM = 1.0` and `XGBoost = 0.0`, so the single tuned
 LightGBM model remains the champion.
 
+The best sampled LightGBM parameter set is:
+
+| Parameter | Value |
+| --- | ---: |
+| `learning_rate` | 0.015 |
+| `num_leaves` | 127 |
+| `min_child_samples` | 150 |
+| `subsample` | 0.95 |
+| `colsample_bytree` | 0.80 |
+| `reg_alpha` | 0.03 |
+| `reg_lambda` | 10.0 |
+| `max_bin` | 255 |
+
+The top tuning candidates are close, but the winner is a conservative
+regularized configuration rather than a very aggressive tree setup.
+
 ## 4. Feature Decision
 
 `safe_plus_ratios_no_driver` is the selected feature set. It keeps compact,
@@ -43,3 +59,22 @@ The tuned model is generally well calibrated, with small underprediction in
 some higher-risk regions. The largest remaining gaps are race-specific, which
 makes race interaction features or CV-safe race calibration the most promising
 next line of work.
+
+Rendered calibration details:
+
+| Prediction Slice | Predicted Rate | Actual Rate | Interpretation |
+| --- | ---: | ---: | --- |
+| `0.0536-0.202` band | 0.11497 | 0.12233 | Underpredicts mid-risk rows. |
+| Highest decile | 0.849 | 0.860 | Slight underprediction at the top. |
+
+Top-risk retrieval is strong:
+
+| Top Prediction Slice | Precision | Recall |
+| --- | ---: | ---: |
+| Top 1% | 0.95222 | 0.04785 |
+| Top 5% | 0.90756 | 0.22805 |
+| Top 10% | 0.85983 | 0.43211 |
+| Top 20% | 0.73942 | 0.74320 |
+
+The final submission path should remain pure tuned LightGBM unless a future
+experiment beats both the OOF score and the calibration profile.
