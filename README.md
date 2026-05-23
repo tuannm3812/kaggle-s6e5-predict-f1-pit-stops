@@ -35,24 +35,30 @@ Input files:
 ```text
 .
 |-- README.md
-|-- .gitignore
-|-- dist/
-|   `-- kaggle-predict-f1-pit-stops-source.zip
+|-- docs/
+|   |-- coding_standards.md
+|   |-- 1_instructions.md
+|   |-- 2_eda_insights.md
+|   `-- notebooks/
+|       |-- 1_eda_and_circuit_context.md
+|       |-- 2_baseline_modeling.md
+|       |-- 3_model_optimization_and_ensemble.md
+|       `-- 4_challenger_models_and_feature_importance.md
 `-- notebooks/
-    |-- 01_eda_and_circuit_context.ipynb
-    |-- 02_baseline_modeling.ipynb
-    |-- 03_model_optimization_and_ensemble.ipynb
-    `-- 04_challenger_models_and_feature_importance.ipynb
+    |-- 1_eda_and_circuit_context.ipynb
+    |-- 2_baseline_modeling.ipynb
+    |-- 3_model_optimization_and_ensemble.ipynb
+    `-- 4_challenger_models_and_feature_importance.ipynb
 ```
 
 ## 3. Notebook Workflow
 
 | Notebook | Purpose |
 | --- | --- |
-| `01_eda_and_circuit_context.ipynb` | Data quality, target behavior, categorical and numerical signal, train/test drift, race-level context. |
-| `02_baseline_modeling.ipynb` | Sanity baseline, linear model, sklearn tree baseline, LightGBM, and XGBoost comparison. |
-| `03_model_optimization_and_ensemble.ipynb` | LightGBM tuning, feature-set validation, XGBoost blend check, calibration/error analysis, final submission. |
-| `04_challenger_models_and_feature_importance.ipynb` | CatBoost challenger, prediction-diversity check, non-tree model decision, feature importance. |
+| `1_eda_and_circuit_context.ipynb` | Data quality, target behavior, categorical and numerical signal, train/test drift, race-level context. |
+| `2_baseline_modeling.ipynb` | Sanity baseline, linear model, sklearn tree baseline, LightGBM, and XGBoost comparison. |
+| `3_model_optimization_and_ensemble.ipynb` | LightGBM tuning, feature-set validation, XGBoost blend check, calibration/error analysis, final submission. |
+| `4_challenger_models_and_feature_importance.ipynb` | CatBoost challenger, prediction-diversity check, non-tree model decision, feature importance. |
 
 ## 4. Data and EDA Insights
 

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="420" viewBox="0 0 760 420" role="img" aria-labelledby="title desc">
+  <title id="title">Feature set validation ROC AUC</title>
+  <desc id="desc">Horizontal bar chart comparing OOF ROC AUC across feature sets.</desc>
+  <rect width="760" height="420" fill="#ffffff"/>
+  <text x="40" y="36" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#222">Feature Set Validation: OOF ROC AUC</text>
+  <text x="40" y="62" font-family="Arial, sans-serif" font-size="12" fill="#666">Axis narrowed to 0.945-0.948 to show small differences.</text>
+  <line x1="310" y1="86" x2="700" y2="86" stroke="#d8d8d8"/>
+  <line x1="310" y1="360" x2="700" y2="360" stroke="#d8d8d8"/>
+  <g font-family="Arial, sans-serif" font-size="12" fill="#333">
+    <text x="54" y="105">safe_plus_ratios_no_driver</text>
+    <text x="113" y="139">safe_plus_ratios</text>
+    <text x="70" y="173">safe_plus_ratios_lifecycle</text>
+    <text x="8" y="207">safe_plus_ratios_lifecycle_no_driver</text>
+    <text x="52" y="241">safe_plus_ratios_no_pitstop</text>
+    <text x="139" y="275">safe_engineered</text>
+    <text x="13" y="309">safe_plus_ratios_lifecycle_no_pitstop</text>
+    <text x="239" y="343">raw</text>
+  </g>
+  <g fill="#21918c">
+    <rect x="310" y="90" width="287" height="20"/>
+    <rect x="310" y="124" width="283" height="20"/>
+    <rect x="310" y="158" width="208" height="20"/>
+    <rect x="310" y="192" width="200" height="20"/>
+    <rect x="310" y="226" width="192" height="20"/>
+    <rect x="310" y="260" width="150" height="20"/>
+    <rect x="310" y="294" width="98" height="20"/>
+    <rect x="310" y="328" width="62" height="20"/>
+  </g>
+  <g font-family="Arial, sans-serif" font-size="12" fill="#222">
+    <text x="606" y="105">0.94721</text>
+    <text x="602" y="139">0.94718</text>
+    <text x="527" y="173">0.94660</text>
+    <text x="519" y="207">0.94654</text>
+    <text x="511" y="241">0.94648</text>
+    <text x="469" y="275">0.94616</text>
+    <text x="417" y="309">0.94576</text>
+    <text x="381" y="343">0.94548</text>
+  </g>
+  <text x="40" y="396" font-family="Arial, sans-serif" font-size="12" fill="#666">Source: notebook 03 feature validation summary.</text>
+</svg>
