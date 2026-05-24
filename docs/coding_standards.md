@@ -139,8 +139,8 @@ the reasoning quickly:
 - Include exact metrics when available.
 - Link notebooks and docs with relative paths.
 - Keep model results grouped under the notebook page that produced them.
-- Keep broad narrative in the root `README.md`; keep detailed evidence in
-  focused docs.
+- Keep broad narrative in the root `README.md`; keep detailed evidence in the
+  numbered docs in `docs/`.
 
 ## 8. Git Hygiene
 

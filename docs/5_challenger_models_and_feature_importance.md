@@ -2,7 +2,7 @@
 
 ## 1. Objective
 
-[`4_challenger_models_and_feature_importance.ipynb`](../../notebooks/4_challenger_models_and_feature_importance.ipynb)
+[`4_challenger_models_and_feature_importance.ipynb`](../notebooks/4_challenger_models_and_feature_importance.ipynb)
 checks whether CatBoost provides useful model diversity and records feature
 importance from the tree-model challengers.
 

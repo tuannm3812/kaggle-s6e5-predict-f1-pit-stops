@@ -2,7 +2,7 @@
 
 ## 1. Objective
 
-[`3_model_optimization_and_ensemble.ipynb`](../../notebooks/3_model_optimization_and_ensemble.ipynb)
+[`3_model_optimization_and_ensemble.ipynb`](../notebooks/3_model_optimization_and_ensemble.ipynb)
 turns the best baseline direction into the primary submission workflow. It tunes
 LightGBM, validates feature sets, tests whether XGBoost adds blend value, checks
 calibration, and writes the final submission candidate.

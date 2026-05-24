@@ -2,7 +2,7 @@
 
 ## 1. Objective
 
-[`2_baseline_modeling.ipynb`](../../notebooks/2_baseline_modeling.ipynb)
+[`2_baseline_modeling.ipynb`](../notebooks/2_baseline_modeling.ipynb)
 builds the first validated model lineup. It establishes a sanity baseline,
 checks whether linear modeling is sufficient, and confirms whether boosted tree
 models are the right direction.

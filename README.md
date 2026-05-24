@@ -39,11 +39,9 @@ Input files:
 |   |-- coding_standards.md
 |   |-- 1_instructions.md
 |   |-- 2_eda_insights.md
-|   `-- notebooks/
-|       |-- 1_eda_and_circuit_context.md
-|       |-- 2_baseline_modeling.md
-|       |-- 3_model_optimization_and_ensemble.md
-|       `-- 4_challenger_models_and_feature_importance.md
+|   |-- 3_baseline_modeling.md
+|   |-- 4_model_optimization_and_ensemble.md
+|   `-- 5_challenger_models_and_feature_importance.md
 `-- notebooks/
     |-- 1_eda_and_circuit_context.ipynb
     |-- 2_baseline_modeling.ipynb
